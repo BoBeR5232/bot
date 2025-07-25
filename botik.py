@@ -279,8 +279,9 @@ def webhook():
 @app.route('/setwebhook', methods=['GET'])
 def set_webhook():
     bot.remove_webhook()
-    success = bot.set_webhook(url=WEBHOOK_URL)
+    success = bot.set_webhook(url=WEBHOOK_URL + '/webhook')
     return f'Webhook set: {success}', 200
+
 
 # === Старт Flask сервера ===
 if __name__ == '__main__':
