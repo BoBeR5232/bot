@@ -8,7 +8,7 @@ import json
 import time
 import requests.exceptions
 
-WEBHOOK_URL = 'https://тут_твой_домен/webhook'
+WEBHOOK_URL = 'https://bot-ucxu.onrender.com'
 TOKEN = '8452824144:AAHp4mUK1l2IvAol4lhiqDuJSrz0lhdqhp4'
 bot = telebot.TeleBot(TOKEN)
 
