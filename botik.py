@@ -5,13 +5,11 @@ import os
 from datetime import datetime
 import requests
 import json
-import time
-import requests.exceptions
 
-WEBHOOK_URL = 'https://bot-ucxu.onrender.com'
+WEBHOOK_URL = 'https://bot-ucxu.onrender.com'  # Вкажи свій https URL Render тут
 TOKEN = '8452824144:AAHp4mUK1l2IvAol4lhiqDuJSrz0lhdqhp4'
-bot = telebot.TeleBot(TOKEN)
 
+bot = telebot.TeleBot(TOKEN)
 app = Flask(__name__)
 
 ARCHIVE_FILE = 'phone_numbers.txt'
@@ -271,18 +269,19 @@ def proceed_after_city_selection(chat_id, city_name):
 @app.route('/webhook', methods=['POST'])
 def webhook():
     json_str = request.get_data().decode('utf-8')
+    print(f"Webhook received: {json_str}")  # Лог для дебага
     update = telebot.types.Update.de_json(json_str)
     bot.process_new_updates([update])
     return 'ok', 200
 
-# === Установка webhook ===
-@app.route('/setwebhook', methods=['GET'])
-def set_webhook():
+# === Автоматична установка webhook при старті ===
+def set_telegram_webhook():
     bot.remove_webhook()
     success = bot.set_webhook(url=WEBHOOK_URL + '/webhook')
-    return f'Webhook set: {success}', 200
+    print(f"Webhook set: {success}")
 
-
-# === Старт Flask сервера ===
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=int(os.environ.get('PORT', 5000)))
+    set_telegram_webhook()
+    port = int(os.environ.get('PORT', 5000))
+    print(f"Starting Flask server on port {port}")
+    app.run(host='0.0.0.0', port=port)
